@@ -1,0 +1,82 @@
+$container-xl: 1440px;
+$container-l: 1140px;
+$container-m: 960px;
+$container-s: 540px;
+
+// Mixin of media-queries
+@mixin responsive($device) {
+    @if $device == xl {
+        // For resolutions upper 1440px
+        @media screen and (min-width: $container-xl) {
+            @content;
+        }
+    } @else if $device == l {
+        // For resolutions between 1140px and 1440px
+        @media screen and (max-width: $container-xl) and (min-width: $container-l) {
+            @content;
+        }
+    } @else if $device == m {
+        // For resolutions between 960px and 1140px
+        @media screen and (max-width: $container-l) and (min-width: $container-s) {
+            @content;
+        }
+    } @else if $device == s {
+        // For resolutions less than 960px
+        @media screen and (max-width: $container-m) {
+            @content;
+        }
+    } @else if $device == xs {
+        // For resolutions less than 540px
+        @media screen and (max-width: $container-s) {
+            @content;
+        }
+    }
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+$container: 1200px;
+$gutter: 24px;
+
+body {
+    width: 100%;
+    background-color: #0c0c0c;
+}
+
+.container {
+    max-width: $container;
+    margin: 48px auto;
+
+    border: 1px solid #555;
+
+    // clearfix
+    &::after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+}
+
+@function grid($col, $total: 12) {
+    @return ($col / $total) * 100%;
+}
+
+@for $i from 1 through 12 {
+    .grid-#{$i} {
+        width: calc(grid($i) - $gutter);
+        margin: $gutter / 2;
+        background-color: #222;
+        border: 1px dotted blue;
+        height: 72px;
+        float: left;
+        @include responsive(s) {
+            width: calc(100% - $gutter);
+            margin: $gutter / 2;
+            float: none;
+        }
+    }
+}
